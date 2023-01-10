@@ -1,9 +1,6 @@
-import java.text.SimpleDateFormat;
+//import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 public class Main {
@@ -34,30 +31,40 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
         List<Account> accountList = new ArrayList<>();
         int custId, accountId, accountBalance;
         String custName;
 
-        for (int i = 0; i < 2; i++) {
-            Customer c = new Customer(101, "SAM", 'M');
-            Account ac = new Account(1001, c, 5000);
-            accountList.add(ac);
+
+        int N = sc.nextInt();
+        if (N <= 500) {
+            for (int i = 0; i < N; i++) {
+                custId = sc.nextInt();
+                custName = sc.next();
+                accountId = sc.nextInt();
+                accountBalance = sc.nextInt();
+
+                Customer c = new Customer(custId, custName);
+                Account ac = new Account(accountId, c, accountBalance);
+                accountList.add(ac);
+            }
+            int searchId = sc.nextInt();
+            int operation = sc.nextInt();
+            int amount = sc.nextInt();
+            System.out.println(AccountInfo(2, accountList, searchId, operation, amount));
         }
-
-        System.out.println(AccountInfo(2, accountList, 1001, 1, 4500));
-
     }
 }
 
 class Customer {
     private int customerId;
     private String customerName;
-    private char customerGender;
 
-    public Customer(int customerId, String customerName, char customerGender) {
+    public Customer(int customerId, String customerName) {
         this.customerId = customerId;
         this.customerName = customerName;
-        this.customerGender = customerGender;
     }
 
     public int getCustomerId() {
@@ -76,19 +83,10 @@ class Customer {
         this.customerName = customerName;
     }
 
-    public char getCustomerGender() {
-        return customerGender;
-    }
-
-    public void setCustomerGender(char customerGender) {
-        this.customerGender = customerGender;
-    }
-
     @Override
     public String toString() {
         return customerId +
-                ":" + customerName +
-                ":" + customerGender;
+                ":" + customerName;
     }
 }
 
@@ -98,8 +96,8 @@ class Account {
     private double accountBalance;
     private double withdrawalAmount;
     private double depositAmount;
-    HashMap<String, String> lastTransaction = new HashMap<>();
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD-MM-YYYY");
+//    HashMap<String, String> lastTransaction = new HashMap<>();
+//    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD-MM-YYYY");
 
     public Account(int accountId, Customer customer, double accountBalance) {
         this.accountId = accountId;
@@ -130,44 +128,44 @@ class Account {
     public double deposit(int depositAmount) {
         this.depositAmount = depositAmount;
         accountBalance += depositAmount;
-        Date date = Date.from(Instant.now());
-        String t_date = simpleDateFormat.format(date);
-        lastTransaction.put("transaction_date", t_date);
-        lastTransaction.put("transaction_type", "DEPOSIT");
-        lastTransaction.put("transaction_amount", depositAmount + "");
-        lastTransaction.put("transaction_status", "Successful");
-        lastTransaction.put("transaction_remark", "");
+//        Date date = Date.from(Instant.now());
+//        String t_date = simpleDateFormat.format(date);
+//        lastTransaction.put("transaction_date", t_date);
+//        lastTransaction.put("transaction_type", "DEPOSIT");
+//        lastTransaction.put("transaction_amount", depositAmount + "");
+//        lastTransaction.put("transaction_status", "Successful");
+//        lastTransaction.put("transaction_remark", "");
         return depositAmount;
     }
 
     public double withdraw(int withdrawalAmount) {
         this.withdrawalAmount = withdrawalAmount;
-        Date date = Date.from(Instant.now());
-        String t_date = simpleDateFormat.format(date);
-        lastTransaction.put("transaction_date", t_date);
-        lastTransaction.put("transaction_type", "WITHDRAWAL");
-        lastTransaction.put("transaction_amount", withdrawalAmount + "");
+//        Date date = Date.from(Instant.now());
+//        String t_date = simpleDateFormat.format(date);
+//        lastTransaction.put("transaction_date", t_date);
+//        lastTransaction.put("transaction_type", "WITHDRAWAL");
+//        lastTransaction.put("transaction_amount", withdrawalAmount + "");
 
         if (withdrawalAmount > accountBalance) {
-            lastTransaction.put("transaction_status", "Failed");
-            System.out.println("AMOUNT EXCEED THE ACTUAL BALANCE");
+//            lastTransaction.put("transaction_status", "Failed");
+//            System.out.println("AMOUNT EXCEED THE ACTUAL BALANCE");
             return 0;
         } else {
             accountBalance -= withdrawalAmount;
             if (accountBalance < 1000) {
                 accountBalance += withdrawalAmount;
-                lastTransaction.put("transaction_status", "Failed");
-                System.out.println("INSUFFICIENT BALANCE");
+//                lastTransaction.put("transaction_status", "Failed");
+//                System.out.println("INSUFFICIENT BALANCE");
                 return 0;
             }
-            lastTransaction.put("transaction_status", "Successful");
+//            lastTransaction.put("transaction_status", "Successful");
             return withdrawalAmount;
         }
     }
 
-    public HashMap<String, String> getLastTransaction() {
-        return lastTransaction;
-    }
+//    public HashMap<String, String> getLastTransaction() {
+//        return lastTransaction;
+//    }
 
     @Override
     public String toString() {
